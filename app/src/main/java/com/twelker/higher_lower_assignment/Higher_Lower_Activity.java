@@ -1,11 +1,16 @@
 package com.twelker.higher_lower_assignment;
 
 import android.os.Debug;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import java.util.Random;
@@ -13,12 +18,14 @@ import java.util.Random;
 public class Higher_Lower_Activity extends AppCompatActivity {
 
     private int[] mImages;
-    private int randomNumber, oldNumber, scoreInt = 4;
+    private int randomNumber, oldNumber, scoreInt, highscoreInt;
     private Random rand;
     private ImageView mImageView;
-    private TextView scoreTextview;
+    private TextView scoreTextview, highscoreTextview;
     private FloatingActionButton mHigherButton;
     private FloatingActionButton mLowerButton;
+    private ListView mThrows;
+    SimpleCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +38,13 @@ public class Higher_Lower_Activity extends AppCompatActivity {
         mHigherButton = findViewById(R.id.HigherButton);
         mLowerButton = findViewById(R.id.LowerButton);
         scoreTextview = findViewById(R.id.ScoreNumber);
+        highscoreTextview = findViewById(R.id.HighScoreNumber);
+        mThrows = findViewById(R.id.ListView);
 
         randomNumber = generateNewRandom();
         oldNumber = randomNumber;
 
+        highscoreTextview.setText(Integer.toString(highscoreInt));
         scoreTextview.setText(Integer.toString(scoreInt));
 
         mHigherButton.setOnClickListener(new View.OnClickListener() {
@@ -45,10 +55,14 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 generateImage();
                 if(randomNumber > oldNumber){
                     scoreInt++;
+                    Snackbar.make (v, "You win", Snackbar.LENGTH_SHORT).setAction("Action",null).show();
                 } else {
                     scoreInt = 0;
+                    Snackbar.make (v, "You lose", Snackbar.LENGTH_SHORT).setAction("Action",null).show();
                 }
                 scoreTextview.setText(Integer.toString(scoreInt));
+                HighscoreCheck();
+                highscoreTextview.setText(Integer.toString(highscoreInt));
             }
         });
 
@@ -60,12 +74,22 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 generateImage();
                 if(randomNumber < oldNumber){
                     scoreInt++;
+                    Snackbar.make (v, "You win", Snackbar.LENGTH_SHORT).setAction("Action",null).show();
                 } else {
                     scoreInt = 0;
+                    Snackbar.make (v, "You lose", Snackbar.LENGTH_SHORT).setAction("Action",null).show();
                 }
                 scoreTextview.setText(Integer.toString(scoreInt));
+                HighscoreCheck();
+                highscoreTextview.setText(Integer.toString(highscoreInt));
             }
         });
+    }
+
+    public void HighscoreCheck(){
+        if(highscoreInt < scoreInt){
+            highscoreInt++;
+        }
     }
 
     int generateNewRandom(){
