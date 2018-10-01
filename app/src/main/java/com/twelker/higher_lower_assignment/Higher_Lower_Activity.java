@@ -68,7 +68,8 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 scoreTextview.setText(Integer.toString(scoreInt));
                 HighscoreCheck();
                 highscoreTextview.setText(Integer.toString(highscoreInt));
-                ScoreList.add(randomNumber);
+                ScoreList.add("You threw " + randomNumber);
+                updateUI();
             }
         });
 
@@ -88,10 +89,10 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 scoreTextview.setText(Integer.toString(scoreInt));
                 HighscoreCheck();
                 highscoreTextview.setText(Integer.toString(highscoreInt));
-                ScoreList.add(randomNumber);
+                ScoreList.add("You threw " + randomNumber);
+                updateUI();
             }
         });
-            updateUI();
     }
 
     private void updateUI() {
