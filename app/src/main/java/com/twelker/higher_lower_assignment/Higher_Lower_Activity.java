@@ -8,11 +8,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Higher_Lower_Activity extends AppCompatActivity {
@@ -24,8 +27,9 @@ public class Higher_Lower_Activity extends AppCompatActivity {
     private TextView scoreTextview, highscoreTextview;
     private FloatingActionButton mHigherButton;
     private FloatingActionButton mLowerButton;
-    private ListView mThrows;
-    SimpleCursorAdapter mAdapter;
+    private ListView mListView;
+    private List ScoreList;
+    ArrayAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,8 @@ public class Higher_Lower_Activity extends AppCompatActivity {
         mLowerButton = findViewById(R.id.LowerButton);
         scoreTextview = findViewById(R.id.ScoreNumber);
         highscoreTextview = findViewById(R.id.HighScoreNumber);
-        mThrows = findViewById(R.id.ListView);
+        mListView = findViewById(R.id.ListView);
+        ScoreList = new ArrayList();
 
         randomNumber = generateNewRandom();
         oldNumber = randomNumber;
@@ -63,6 +68,7 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 scoreTextview.setText(Integer.toString(scoreInt));
                 HighscoreCheck();
                 highscoreTextview.setText(Integer.toString(highscoreInt));
+                ScoreList.add(randomNumber);
             }
         });
 
@@ -82,9 +88,21 @@ public class Higher_Lower_Activity extends AppCompatActivity {
                 scoreTextview.setText(Integer.toString(scoreInt));
                 HighscoreCheck();
                 highscoreTextview.setText(Integer.toString(highscoreInt));
+                ScoreList.add(randomNumber);
             }
         });
+            updateUI();
     }
+
+    private void updateUI() {
+        if (mAdapter == null) {
+            mAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ScoreList);
+            mListView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
 
     public void HighscoreCheck(){
         if(highscoreInt < scoreInt){
